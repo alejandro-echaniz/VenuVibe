@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/eventTitle"
+        android:text="Event Title"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:padding="5dp" />
+    <TextView
+        android:id="@+id/eventDate"
+        android:layout_toRightOf="@+id/eventTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4/25/25, 9PM"
+        android:textSize="18dp"
+        android:padding="5dp"
+        android:textColor="#555555" />
+    <TextView
+        android:id="@+id/eventDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="description..."
+        android:layout_below="@+id/eventDate"
+        android:textSize="14sp"
+        android:padding="3dp"
+        android:textColor="#555555" />
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_below="@+id/eventDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="0.5"
+        android:rating="4.0"
+        android:layout_marginTop="8dp" />
+
+
+
+
+
+</RelativeLayout>
+
