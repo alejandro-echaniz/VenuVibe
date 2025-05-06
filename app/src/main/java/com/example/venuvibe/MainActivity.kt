@@ -77,6 +77,8 @@ class MainActivity : AppCompatActivity() {
                         "Auth failed: ${task.exception?.message}",
                         Toast.LENGTH_LONG
                     ).show()
+                    Log.e("AuthError", "Auth failed", task.exception)
+
                 }
             }
         } else {
