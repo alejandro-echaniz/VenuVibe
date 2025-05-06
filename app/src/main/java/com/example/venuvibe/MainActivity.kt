@@ -20,6 +20,10 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.AdView
 
+/* Hooking up FABS */
+import android.content.Intent
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 class MainActivity : AppCompatActivity() {
     // Firebase remote db setup
     private lateinit var firebase: FirebaseDatabase
@@ -76,5 +80,17 @@ class MainActivity : AppCompatActivity() {
         adView.loadAd(adRequest)
 
         // LOADING EVENTS
+
+        // ADD EVENT
+        findViewById<FloatingActionButton>(R.id.fabAddEvent)
+            .setOnClickListener {
+                startActivity(Intent(this, AddEventActivity::class.java))
+            }
+
+        //
+        findViewById<FloatingActionButton>(R.id.fabRatedEvents)
+            .setOnClickListener {
+                startActivity(Intent(this, RatedEventsActivity::class.java))
+            }
     }
 }
