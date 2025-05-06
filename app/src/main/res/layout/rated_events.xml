@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:title="Saved Events"
+        app:title="Rated Events"
         app:titleCentered="true"
         app:titleTextAppearance="@style/ToolbarTitle.Bold.White" />
 
