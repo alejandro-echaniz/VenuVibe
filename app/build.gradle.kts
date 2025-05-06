@@ -37,7 +37,6 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.gms:play-services-ads:23.5.0" )
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -46,8 +45,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
+    implementation("com.google.android.gms:play-services-ads:23.5.0" )  // Import advertisements
+    implementation(platform("com.google.firebase:firebase-bom:33.5.0")) // Import the Firebase BoM
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")

@@ -15,6 +15,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 
+/* Advertisement imports */
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.AdView
+
 class MainActivity : AppCompatActivity() {
     // Firebase remote db setup
     private lateinit var firebase: FirebaseDatabase
@@ -42,32 +47,6 @@ class MainActivity : AppCompatActivity() {
         repository = EventRepository(firebase, eventsRef)
 
 
-        /* THIS IS FOR TESTING IF FIREBASE CONNECTION WORKED, NOT FOR ACTUAL PROJECT CODE
-
-        val healthRef = firebase.getReference("health_check")
-
-        healthRef.setValue("OK at ${System.currentTimeMillis()}") { error, _ ->
-            if (error != null) {
-                // DatabaseError → Throwable
-                Log.e("MainActivity", "Health check write failed", error.toException())
-            } else {
-                Log.d("MainActivity", "Health check write succeeded")
-            }
-        }
-
-        healthRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val value = snapshot.getValue(String::class.java)
-                Log.d("MainActivity", "Health check read: $value")
-            }
-            override fun onCancelled(dbError: DatabaseError) {
-                // DatabaseError → Throwable
-                Log.e("MainActivity", "Health check read cancelled", dbError.toException())
-            }
-        })
-        */
-
-
         // anonymous login
         if (auth.currentUser == null) {
             auth.signInAnonymously().addOnCompleteListener(this) { task ->
@@ -89,6 +68,13 @@ class MainActivity : AppCompatActivity() {
     // Called after user signs in and db ready
     private fun startApp() {
         // Can't really code this until the other files are coded
-        // Load events
+        // LOADING ADVERTISEMENT
+        MobileAds.initialize(this) {}
+
+        val adView = findViewById<AdView>(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+
+        // LOADING EVENTS
     }
 }

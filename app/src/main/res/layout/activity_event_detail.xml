@@ -65,5 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Save My Rating"
             android:layout_marginTop="12dp" />
+
+
     </LinearLayout>
 </ScrollView>
