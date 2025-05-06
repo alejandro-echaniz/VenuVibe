@@ -43,6 +43,7 @@
 
         <activity android:name=".AddEventActivity" />
         <activity android:name=".RatedEventsActivity" />
+        <activity android:name=".DetailActivity" />
     </application>
 
 </manifest>
