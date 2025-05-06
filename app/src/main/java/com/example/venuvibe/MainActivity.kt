@@ -2,10 +2,12 @@ package com.example.venuvibe
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import android.util.Log
 import android.widget.CalendarView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.venuvibe.data.EventRepository
@@ -24,6 +26,9 @@ import com.google.android.gms.ads.AdView
 /* Hooking up FABS */
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
+/* User Preferences */
+import com.example.venuvibe.data.UserPrefs
+
 class MainActivity : AppCompatActivity() {
     // Firebase remote db setup
     private lateinit var firebase: FirebaseDatabase
@@ -39,11 +44,39 @@ class MainActivity : AppCompatActivity() {
     private var selectedDate: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Apply saved theme before inflating layout
+        val isDark = UserPrefs.isDarkModeEnabled(this)
+        AppCompatDelegate.setDefaultNightMode(
+            if (isDark)
+                AppCompatDelegate.MODE_NIGHT_YES
+            else
+                AppCompatDelegate.MODE_NIGHT_NO
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        // 1) Wire up toolbar and theme toggle
+        val toolbar = findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        val toggle = toolbar.findViewById<TextView>(R.id.toggleTheme)
+        // initialize icon
+        toggle.text = if (isDark) "☀️" else "🌙"
+        toggle.setOnClickListener {
+            // flip the saved preference
+            val nextDark = !UserPrefs.isDarkModeEnabled(this)
+            UserPrefs.saveDarkModeEnabled(this, nextDark)
+
+            // apply the new mode (will recreate activity)
+            AppCompatDelegate.setDefaultNightMode(
+            if (nextDark) AppCompatDelegate.MODE_NIGHT_YES
+                    else AppCompatDelegate.MODE_NIGHT_NO
+            )
+        }
+
         firebase = FirebaseDatabase.getInstance()
-        firebase.setPersistenceEnabled(true)
         eventsRef = firebase.getReference("events")
         auth = FirebaseAuth.getInstance()
         repository = EventRepository(firebase, eventsRef)
