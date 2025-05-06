@@ -3,32 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <!-- || EVENT TITLE INPUT -->
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/eventTitle"
-        android:text="Event Title"
+        android:hint="Event Title"
         android:textSize="18sp"
         android:textStyle="italic"
         android:padding="5dp" />
-    <TextView
+
+    <!-- || EVENT DATE- (yyyyMMdd) -->
+    <EditText
         android:id="@+id/eventDate"
         android:layout_toRightOf="@+id/eventTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4/25/25, 9PM"
-        android:textSize="18dp"
+        android:hint="4/25/25, 9PM"
+        android:textSize="18sp"
         android:padding="5dp"
         android:textColor="#555555" />
-    <TextView
+
+    <!-- || EVENT DESCRIPTION -->
+    <EditText
         android:id="@+id/eventDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="description..."
+        android:hint="This event is about..."
         android:layout_below="@+id/eventDate"
         android:textSize="14sp"
         android:padding="3dp"
         android:textColor="#555555" />
+
+    <!-- || RATING BAR -->
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_below="@+id/eventDescription"
@@ -39,6 +46,7 @@
         android:rating="4.0"
         android:layout_marginTop="8dp" />
 
+    <!-- || SUBMIT FORM (SAVE EVENT & RATING) -->
     <Button
         android:id="@+id/btnSaveEvent"
         android:layout_below="@+id/ratingBar"
@@ -49,7 +57,4 @@
         android:layout_centerHorizontal="true"
         android:padding="10dp" />
 
-
-
 </RelativeLayout>
-
