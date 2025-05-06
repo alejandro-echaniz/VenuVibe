@@ -31,12 +31,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Event Date Input -->
+    <!-- Event Date Input TODO: fix date -->
     <EditText
         android:id="@+id/eventDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="4/25/25, 9PM"
+        android:hint="yyyyMMdd"
         android:textSize="18sp"
         android:padding="5dp"
         android:textColor="#555555"
