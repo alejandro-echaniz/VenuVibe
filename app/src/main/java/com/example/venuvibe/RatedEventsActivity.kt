@@ -12,6 +12,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
+// test comment to push
+
 class RatedEventsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
