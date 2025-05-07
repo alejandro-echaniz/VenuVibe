@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:titleTextAppearance="@style/ToolbarTitle.Bold.White" />
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
     <!-- Event Title Input -->
     <EditText

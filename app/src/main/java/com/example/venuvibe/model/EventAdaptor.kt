@@ -20,16 +20,16 @@ class EventAdapter(
     }
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvTitle: TextView = itemView.findViewById(R.id.eventTitle)
-        private val tvDate: TextView = itemView.findViewById(R.id.eventDate)
-        private val tvDescription: TextView = itemView.findViewById(R.id.eventDescription)
-        private val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBar)
+        private val tvTitle: TextView = itemView.findViewById(R.id.tvEventTitle)
+        private val tvDate: TextView = itemView.findViewById(R.id.tvEventDate)
+       // private val tvDescription: TextView = itemView.findViewById(R.id.eventDescription)
+        // private val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBar)
 
         fun bind(event: Event) {
             tvTitle.text = event.title
             tvDate.text = event.getDateFormatted() // if you format date in model
-            tvDescription.text = event.description
-            ratingBar.rating = event.averageRating
+            //tvDescription.text = event.description
+            //ratingBar.rating = event.averageRating
 
             itemView.setOnClickListener { onClick(event) }
         }
@@ -37,7 +37,7 @@ class EventAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_event, parent, false)
+            .inflate(R.layout.item_event_added, parent, false)
         return EventViewHolder(view)
     }
 
