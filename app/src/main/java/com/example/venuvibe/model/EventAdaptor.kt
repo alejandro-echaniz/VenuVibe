@@ -22,7 +22,7 @@ class EventAdapter(
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvTitle: TextView = itemView.findViewById(R.id.tvEventTitle)
         private val tvDate: TextView = itemView.findViewById(R.id.tvEventDate)
-       // private val tvDescription: TextView = itemView.findViewById(R.id.eventDescription)
+        // private val tvDescription: TextView = itemView.findViewById(R.id.eventDescription)
         // private val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBar)
 
         fun bind(event: Event) {

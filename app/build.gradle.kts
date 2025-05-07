@@ -58,7 +58,9 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.android.gms:play-services-ads:23.5.0" )  // Import advertisements
     implementation(platform("com.google.firebase:firebase-bom:33.5.0")) // Import the Firebase BoM
-    implementation ("com.google.android.material:material:1.7.0") // Import clock face time picker
+    implementation ("com.google.android.material:material:1.7.0")       // Import clock face time picker
+    implementation("com.google.android.libraries.places:places:2.7.0")  // Import Places SDK
+    implementation("com.google.android.gms:play-services-maps:18.1.0")  // import for Maps Dependency
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")

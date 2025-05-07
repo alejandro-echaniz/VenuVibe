@@ -1,6 +1,7 @@
 package com.example.venuvibe
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
@@ -8,8 +9,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.venuvibe.data.EventRepository
 import com.example.venuvibe.model.Event
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
@@ -30,6 +36,10 @@ class AddEventActivity : AppCompatActivity() {
     private var selectedHour = 0
     private var selectedMinute = 0
 
+    // holds the user‐picked location
+    private var selectedLatLng: LatLng? = null
+    private var selectedAddress: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.item_event)
@@ -46,14 +56,42 @@ class AddEventActivity : AppCompatActivity() {
         eventsRef = database.getReference("events")
         repo      = EventRepository(database, eventsRef)
 
-        // set the DatePicker to today by default
-        val today = Calendar.getInstance()
-        datePicker.init(
-            today.get(Calendar.YEAR),
-            today.get(Calendar.MONTH),
-            today.get(Calendar.DAY_OF_MONTH),
-            null
+        // default date to today
+        Calendar.getInstance().also { today ->
+            datePicker.init(
+                today.get(Calendar.YEAR),
+                today.get(Calendar.MONTH),
+                today.get(Calendar.DAY_OF_MONTH),
+                null
+            )
+        }
+
+        // set up Places autocomplete fragment
+        val autocompleteFragment = supportFragmentManager
+            .findFragmentById(R.id.eventLocation) as AutocompleteSupportFragment
+
+        autocompleteFragment.setPlaceFields(
+            listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.LAT_LNG
+            )
         )
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                selectedLatLng  = place.latLng
+                selectedAddress = place.address ?: place.name.orEmpty()
+            }
+            override fun onError(status: Status) {
+                Log.e("AddEventActivity", "Places Autocomplete error: code=${status.statusCode}, msg=${status.statusMessage}")
+                Toast.makeText(
+                    this@AddEventActivity,
+                    "Error selecting place: $status",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
 
         // wire up the dial‐style time picker
         etTime.setOnClickListener {
@@ -83,30 +121,39 @@ class AddEventActivity : AppCompatActivity() {
             val desc  = etDescription.text.toString().trim()
             val time  = etTime.text.toString().trim()
 
-            if (title.isEmpty() || desc.isEmpty() || time.isEmpty()) {
-                Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show()
+            if (title.isEmpty()
+                || desc.isEmpty()
+                || time.isEmpty()
+                || selectedLatLng == null
+                || selectedAddress.isEmpty()
+            ) {
+                Toast.makeText(
+                    this,
+                    "Please fill all fields and select a location",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
-            // build a Calendar combining date + time
+            // combine date + time into one timestamp
             val cal = Calendar.getInstance().apply {
-                set(Calendar.YEAR,          datePicker.year)
-                set(Calendar.MONTH,         datePicker.month)
-                set(Calendar.DAY_OF_MONTH,  datePicker.dayOfMonth)
-                set(Calendar.HOUR_OF_DAY,   selectedHour)
-                set(Calendar.MINUTE,        selectedMinute)
-                set(Calendar.SECOND,        0)
-                set(Calendar.MILLISECOND,   0)
+                set(Calendar.YEAR,         datePicker.year)
+                set(Calendar.MONTH,        datePicker.month)
+                set(Calendar.DAY_OF_MONTH, datePicker.dayOfMonth)
+                set(Calendar.HOUR_OF_DAY,  selectedHour)
+                set(Calendar.MINUTE,       selectedMinute)
+                set(Calendar.SECOND,       0)
+                set(Calendar.MILLISECOND,  0)
             }
             val timestamp = cal.timeInMillis
 
-            // create and save the event
+            // build and save the new event
             val newEvent = Event(
                 id            = "",
                 title         = title,
-                description   = desc,
-                latitude      = 0.0,
-                longitude     = 0.0,
+                description   = "$desc\nLocation: $selectedAddress",
+                latitude      = selectedLatLng!!.latitude,
+                longitude     = selectedLatLng!!.longitude,
                 date          = timestamp,
                 averageRating = 0f
             )
@@ -116,7 +163,11 @@ class AddEventActivity : AppCompatActivity() {
                     Toast.makeText(this, "Event saved!", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this, "Save failed: ${err.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        "Save failed: ${err.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

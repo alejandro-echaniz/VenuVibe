@@ -56,6 +56,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Event Location Input -->
+    <fragment
+        android:id="@+id/eventLocation"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/eventTime"/>
 
     <!-- Event Description Input -->
     <EditText
@@ -66,7 +73,7 @@
         android:textSize="14sp"
         android:padding="3dp"
         android:textColor="#555555"
-        app:layout_constraintTop_toBottomOf="@id/eventTime"
+        app:layout_constraintTop_toBottomOf="@id/eventLocation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_min="100dp"
