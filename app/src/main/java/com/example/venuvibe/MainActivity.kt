@@ -186,28 +186,14 @@ class MainActivity : AppCompatActivity() {
         eventAdapter.updateEvents(filtered)
     }
 
-    // 2) Inflate your menu_main.xml
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        // restore “Show past” checkbox from prefs
-        // menu.findItem(R.id.action_show_past).isChecked = UserPrefs.isShowPastEnabled(this)
         return true
     }
 
-    // 3) Handle both menu actions: “Show past” and “Accent”
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            /* R.id.action_show_past -> {
-                // toggle & persist
-                val next = !item.isChecked
-                item.isChecked = next
-                UserPrefs.saveShowPastEnabled(this, next)
-                filterEventsByDate()
-                true
-            } */
-
             R.id.action_pick_color -> {
-                // show a simple color picker dialog
                 val colors = arrayOf("Purple", "Green", "Teal")
                 val colorValues = arrayOf(
                     0xFF6200EE.toInt(),

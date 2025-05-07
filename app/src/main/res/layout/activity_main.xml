@@ -16,11 +16,6 @@
         app:title="VenuVibe"
         app:titleTextColor="@color/white"
         app:titleCentered="true"
-
-        app:contentInsetStart="0dp"
-        app:contentInsetEnd="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        app:contentInsetEndWithActions="0dp"
         >
 
         <!-- Theme toggle -> 1st use of local user persistent data -->

@@ -19,13 +19,6 @@ object UserPrefs {
     fun isDarkModeEnabled(ctx: Context): Boolean =
         prefs(ctx).getBoolean(KEY_DARK_MODE, false)
 
-    fun saveShowPastEnabled(ctx: Context, enabled: Boolean) {
-        prefs(ctx).edit().putBoolean(KEY_SHOW_PAST, enabled).apply()
-    }
-
-    fun isShowPastEnabled(ctx: Context): Boolean =
-        prefs(ctx).getBoolean(KEY_SHOW_PAST, false)
-
     fun saveAccentColor(ctx: Context, @ColorInt color: Int) {
         prefs(ctx).edit()
             .putInt(KEY_ACCENT_COLOR, color)
