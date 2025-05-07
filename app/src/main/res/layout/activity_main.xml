@@ -16,16 +16,21 @@
         app:title="VenuVibe"
         app:titleTextColor="@color/white"
         app:titleCentered="true"
+
+        app:contentInsetStart="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStartWithNavigation="0dp"
+        app:contentInsetEndWithActions="0dp"
         >
 
-        <!-- Theme toggle -> local user persistent data -->
+        <!-- Theme toggle -> 1st use of local user persistent data -->
         <TextView
             android:id="@+id/toggleTheme"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end|center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:textSize="18sp"
             android:text="🌙"
             android:gravity="center"/>
