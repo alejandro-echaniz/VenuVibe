@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-    <!-- Event Title Input -->
+    <!-- Event Title -->
     <EditText
         android:id="@+id/eventTitle"
         android:layout_width="0dp"
