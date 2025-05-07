@@ -1,10 +1,13 @@
 package com.example.venuvibe
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.TextView
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.CalendarView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -63,6 +66,10 @@ class MainActivity : AppCompatActivity() {
 
         // 1) Wire up toolbar and theme toggle
         val toolbar = findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.toolbar)
+
+        val accent = UserPrefs.getAccentColor(this)
+        toolbar.setBackgroundColor(accent)
+
         setSupportActionBar(toolbar)
 
         val toggle = toolbar.findViewById<TextView>(R.id.toggleTheme)
@@ -181,5 +188,36 @@ class MainActivity : AppCompatActivity() {
             dateFormatted == selectedDate
         }
         eventAdapter.updateEvents(filtered)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_pick_color -> {
+                val colors = arrayOf("Purple", "Green", "Teal")
+                val colorValues = arrayOf(
+                    0xFF6200EE.toInt(),
+                    0xFF388E3C.toInt(),
+                    0xFF00796B.toInt()
+                    )
+                AlertDialog.Builder(this)
+                    .setTitle("Pick an accent")
+                    .setItems(colors) { _, which ->
+                        val chosen = colorValues[which]
+                        // persist
+                        UserPrefs.saveAccentColor(this, chosen)
+                        // immediately re-tint toolbar
+                        findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.toolbar)
+                            .setBackgroundColor(chosen)
+                    }
+                        .show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
