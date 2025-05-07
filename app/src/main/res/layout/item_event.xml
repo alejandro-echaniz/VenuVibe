@@ -31,19 +31,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Event Date Input -->
-    <EditText
-        android:id="@+id/eventDate"
+    <!-- Date selector (spinner mode) -->
+    <DatePicker
+        android:id="@+id/datePicker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="4/25/25, 9PM"
-        android:textSize="18sp"
-        android:padding="5dp"
-        android:textColor="#555555"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/eventTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Time selector (spinner mode) -->
+    <EditText
+        android:id="@+id/eventTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Select time"
+        android:focusable="false"
+        android:clickable="true"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/datePicker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <!-- Event Description Input -->
     <EditText
@@ -54,7 +66,7 @@
         android:textSize="14sp"
         android:padding="3dp"
         android:textColor="#555555"
-        app:layout_constraintTop_toBottomOf="@id/eventDate"
+        app:layout_constraintTop_toBottomOf="@id/eventTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_min="100dp"
@@ -67,9 +79,10 @@
         android:layout_height="wrap_content"
         android:numStars="5"
         android:stepSize="0.5"
-        android:rating="4.0"
+        android:rating="3.0"
         app:layout_constraintTop_toBottomOf="@id/eventDescription"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
     <!-- Save Button -->
