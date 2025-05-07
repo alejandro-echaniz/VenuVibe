@@ -14,11 +14,12 @@
         android:background="?attr/colorPrimary"
         app:title="Rated Events"
         app:titleCentered="true"
-        app:titleTextAppearance="@style/ToolbarTitle.Bold.White" />
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
     <!-- Rated events list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRatedEvents"
+
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

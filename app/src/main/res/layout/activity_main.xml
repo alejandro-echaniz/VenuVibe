@@ -11,14 +11,13 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#6200EE"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="56dp"
         app:title="VenuVibe"
-        app:titleTextColor="@color/white"
         app:titleCentered="true"
-        >
+        app:titleTextAppearance="@style/Toolbar.TitleText">
 
-        <!-- Theme toggle -> local user persistent data -->
         <TextView
             android:id="@+id/toggleTheme"
             android:layout_width="wrap_content"
@@ -28,10 +27,9 @@
             android:paddingEnd="16dp"
             android:textSize="18sp"
             android:text="🌙"
-            android:gravity="center"/>
-
+            android:gravity="center"
+            android:fontFamily="@font/cool_font" />
     </com.google.android.material.appbar.MaterialToolbar>
-
     <!--Content-->
     <LinearLayout
         android:layout_marginTop="100dp"

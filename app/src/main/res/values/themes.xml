@@ -8,8 +8,10 @@
     <style name="Theme.VenuVibe" parent="Base.Theme.VenuVibe" />
 
 
-    <style name="ToolbarTitle.Bold.White" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
-    </style>>
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/cool_font</item>
+    </style>
+
 </resources>
