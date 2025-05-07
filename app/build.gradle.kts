@@ -1,8 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
 }
+
+val secretProps = Properties().apply {
+    file("secrets.properties").takeIf { it.exists() }
+        ?.inputStream()
+        ?.use { load(it) }
+}
+
+
 
 android {
     namespace = "com.example.venuvibe"
@@ -16,6 +26,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        resValue("string", "google_maps_key", secretProps.getProperty("MAPS_API_KEY", ""))
     }
 
     buildTypes {
