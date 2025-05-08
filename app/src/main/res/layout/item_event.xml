@@ -1,107 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Toolbar with “Event Creation” title -->
+    <!-- 1) Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:title="Event Creation"
         app:titleCentered="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-    <!-- Event Title -->
-    <EditText
-        android:id="@+id/eventTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Event Title"
-        android:textSize="18sp"
-        android:padding="5dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Date selector (spinner mode) -->
-    <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
+    <!-- 2) Title Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/eventTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Time selector (spinner mode) -->
-    <EditText
-        android:id="@+id/eventTime"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Select time"
-        android:focusable="false"
-        android:clickable="true"
-        android:padding="12dp"
-        app:layout_constraintTop_toBottomOf="@id/datePicker"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:hint="Event Title">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Event Location Input -->
+    <!-- 3) Date & Time side-by-side -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Time">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eventTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:layout_marginTop="500dp"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:clickable="true"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <!-- 4) Location Autocomplete -->
     <fragment
         android:id="@+id/eventLocation"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!-- 5) Description (multiline) -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/eventTime"/>
+        android:hint="Description">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventDescription"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Event Description Input -->
-    <EditText
-        android:id="@+id/eventDescription"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:hint="This event is about..."
-        android:textSize="14sp"
-        android:padding="3dp"
-        android:textColor="#555555"
-        app:layout_constraintTop_toBottomOf="@id/eventLocation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="100dp"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Rating Bar -->
+    <!-- 6) Rating Bar (centered) -->
     <RatingBar
         android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:numStars="5"
         android:stepSize="0.5"
-        android:rating="3.0"
-        app:layout_constraintTop_toBottomOf="@id/eventDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"/>
-
-    <!-- Save Button -->
-    <Button
-        android:id="@+id/btnSaveEvent"
-        android:layout_width="0dp"
+        android:rating="3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Event and Rating"
-        android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@id/ratingBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 7) Save Button (full width) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveEvent"
+        style="@style/Widget.MaterialComponents.Button"
+        android:text="Create Event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"/>
+</LinearLayout>

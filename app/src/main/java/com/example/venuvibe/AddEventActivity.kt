@@ -70,6 +70,8 @@ class AddEventActivity : AppCompatActivity() {
         val autocompleteFragment = supportFragmentManager
             .findFragmentById(R.id.eventLocation) as AutocompleteSupportFragment
 
+        autocompleteFragment.setHint("Enter event location")
+
         autocompleteFragment.setPlaceFields(
             listOf(
                 Place.Field.ID,
