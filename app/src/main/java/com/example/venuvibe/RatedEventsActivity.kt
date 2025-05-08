@@ -36,7 +36,8 @@ class RatedEventsActivity : AppCompatActivity() {
         ratedEventAdapter = EventAdapter(ratedEventsList) { event ->
             // On item click, navigate to the detail activity
             val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("event", event)
+            // pass just the ID, since DetailActivity reads "eventId"
+            intent.putExtra("eventId", event.id)
             startActivity(intent)
         }
         recyclerView.adapter = ratedEventAdapter
