@@ -1,59 +1,79 @@
 package com.example.venuvibe
 
-// test comment to push
-
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.venuvibe.model.Event
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var event: Event
+    private lateinit var mapView: MapView
     private lateinit var detailTitle: TextView
-    private lateinit var imgEvent: ImageView
     private lateinit var detailDate: TextView
     private lateinit var tvDetailDescription: TextView
     private lateinit var ratingBar: RatingBar
-    private lateinit var btnSaveRating: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_detail)
 
-        // Initialize UI elements
-        detailTitle = findViewById(R.id.detailTitle)
-        imgEvent = findViewById(R.id.imgEvent)
-        detailDate = findViewById(R.id.detailDate)
+        // 1) Bind your views
+        detailTitle         = findViewById(R.id.detailTitle)
+        detailDate          = findViewById(R.id.detailDate)
         tvDetailDescription = findViewById(R.id.tvDetailDescription)
-        ratingBar = findViewById(R.id.ratingBar)
-        btnSaveRating = findViewById(R.id.btnSaveRating)
+        ratingBar           = findViewById(R.id.ratingBar)
+        mapView             = findViewById(R.id.mapView)
 
-        // Get the event from the Intent
-        event = intent.getSerializableExtra("event") as Event
+        // 2) Pull the Parcelable Event out of the Intent into your property
+        event = intent.getParcelableExtra<Event>("event")
+            ?: run {
+                Toast.makeText(this, "No event data!", Toast.LENGTH_SHORT).show()
+                finish()
+                return
+            }
 
-        // Bind event data to views
-        detailTitle.text = event.title
-        imgEvent.setImageResource(R.drawable.img)  // Replace with actual image if available
-        detailDate.text = event.date.getDateFormatted() // Adjust format as necessary
+        // 3) Immediately bind all the text fields
+        detailTitle.text         = event.title
+        detailDate.text          = event.date.getDateFormatted()
         tvDetailDescription.text = event.description
+        ratingBar.rating         = event.averageRating
 
-        // Save rating
-        btnSaveRating.setOnClickListener {
-            val rating = ratingBar.rating
-            // Save rating to Firebase or local storage here
-        }
+        // 4) Initialize and request the map
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync(this)
     }
 
-    fun Long.getDateFormatted(): String {
-        val date = Date(this) // Convert the timestamp (Long) to a Date object
-        val format = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()) // Define the format
-        return format.format(date) // Return the formatted date as a String
+    // 5) Once the map is ready, drop your pin at event.latitude/longitude
+    override fun onMapReady(googleMap: GoogleMap) {
+        val pos = LatLng(event.latitude, event.longitude)
+        googleMap.addMarker(MarkerOptions().position(pos).title(event.title))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
     }
+
+    // 6) Forward MapView lifecycle calls
+    override fun onResume()           { super.onResume();    mapView.onResume() }
+    override fun onStart()            { super.onStart();     mapView.onStart() }
+    override fun onPause()            { mapView.onPause();    super.onPause() }
+    override fun onStop()             { super.onStop();      mapView.onStop() }
+    override fun onDestroy()          { mapView.onDestroy();  super.onDestroy() }
+    override fun onLowMemory()        { super.onLowMemory(); mapView.onLowMemory() }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapView.onSaveInstanceState(outState)
+    }
+}
+
+// Extension to format your timestamp
+fun Long.getDateFormatted(): String {
+    val fmt = java.text.SimpleDateFormat("MMM dd, yyyy", java.util.Locale.getDefault())
+    return fmt.format(java.util.Date(this))
 }

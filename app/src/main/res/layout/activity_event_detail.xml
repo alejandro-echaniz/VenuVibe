@@ -2,6 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
     <LinearLayout
@@ -18,14 +20,13 @@
             android:textStyle="bold"
             />
 
-        <ImageView
-            android:id="@+id/imgEvent"
+        <!-- MapView of event location  -->
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Event Image"
-            android:src="@drawable/img"
-            />
+            map:mapType="normal"
+            android:layout_marginTop="8dp"/>
 
         <TextView
             android:id="@+id/detailDate"
@@ -35,13 +36,6 @@
             android:textSize="18sp"
             android:layout_marginTop="4dp" />
 
-        <TextView
-            android:id="@+id/tvDetailLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location Info"
-            android:textSize="18sp"
-            android:layout_marginTop="4dp" />
 
         <TextView
             android:id="@+id/tvDetailDescription"
