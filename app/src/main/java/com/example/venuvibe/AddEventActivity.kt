@@ -1,10 +1,11 @@
 package com.example.venuvibe
 
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.venuvibe.data.EventRepository
@@ -26,17 +27,18 @@ class AddEventActivity : AppCompatActivity() {
     private lateinit var etDescription: EditText
     private lateinit var datePicker: DatePicker
     private lateinit var etTime: EditText
+    private lateinit var ratingBar: RatingBar
     private lateinit var btnSubmit: Button
 
     private lateinit var database: FirebaseDatabase
     private lateinit var eventsRef: DatabaseReference
     private lateinit var repo: EventRepository
 
-    // holds the user‐picked hour & minute
+    // holds the user-picked hour & minute
     private var selectedHour = 0
     private var selectedMinute = 0
 
-    // holds the user‐picked location
+    // holds the user-picked location
     private var selectedLatLng: LatLng? = null
     private var selectedAddress: String = ""
 
@@ -44,34 +46,38 @@ class AddEventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.item_event)
 
-        // bind views
+        // 1) bind views
         etTitle       = findViewById(R.id.eventTitle)
         etDescription = findViewById(R.id.eventDescription)
         datePicker    = findViewById(R.id.datePicker)
         etTime        = findViewById(R.id.eventTime)
+        ratingBar     = findViewById(R.id.ratingBar)
         btnSubmit     = findViewById(R.id.btnSaveEvent)
+
+        // hide rating bar by default
+        ratingBar.visibility = View.GONE
 
         // init Firebase & repo
         database  = FirebaseDatabase.getInstance()
         eventsRef = database.getReference("events")
         repo      = EventRepository(database, eventsRef)
 
-        // default date to today
+        // 2) default date to today, and listen for changes
         Calendar.getInstance().also { today ->
             datePicker.init(
                 today.get(Calendar.YEAR),
                 today.get(Calendar.MONTH),
-                today.get(Calendar.DAY_OF_MONTH),
-                null
-            )
+                today.get(Calendar.DAY_OF_MONTH)
+            ) { _, _, _, _ ->
+                updateRatingVisibility()
+            }
         }
 
-        // set up Places autocomplete fragment
+        // 3) set up Places autocomplete fragment
         val autocompleteFragment = supportFragmentManager
             .findFragmentById(R.id.eventLocation) as AutocompleteSupportFragment
 
         autocompleteFragment.setHint("Enter event location")
-
         autocompleteFragment.setPlaceFields(
             listOf(
                 Place.Field.ID,
@@ -86,7 +92,6 @@ class AddEventActivity : AppCompatActivity() {
                 selectedAddress = place.address ?: place.name.orEmpty()
             }
             override fun onError(status: Status) {
-                Log.e("AddEventActivity", "Places Autocomplete error: code=${status.statusCode}, msg=${status.statusMessage}")
                 Toast.makeText(
                     this@AddEventActivity,
                     "Error selecting place: $status",
@@ -95,7 +100,7 @@ class AddEventActivity : AppCompatActivity() {
             }
         })
 
-        // wire up the dial‐style time picker
+        // 4) wire up the dial-style time picker
         etTime.setOnClickListener {
             val now = Calendar.getInstance()
             val picker = MaterialTimePicker.Builder()
@@ -109,15 +114,16 @@ class AddEventActivity : AppCompatActivity() {
                 selectedHour   = picker.hour
                 selectedMinute = picker.minute
                 now.set(Calendar.HOUR_OF_DAY, selectedHour)
-                now.set(Calendar.MINUTE,        selectedMinute)
+                now.set(Calendar.MINUTE, selectedMinute)
                 val fmt = SimpleDateFormat("hh:mm a", Locale.getDefault())
                 etTime.setText(fmt.format(now.time))
+                updateRatingVisibility()
             }
 
             picker.show(supportFragmentManager, "TIME_PICKER")
         }
 
-        // handle form submission
+        // 5) handle form submission
         btnSubmit.setOnClickListener {
             val title = etTitle.text.toString().trim()
             val desc  = etDescription.text.toString().trim()
@@ -139,13 +145,13 @@ class AddEventActivity : AppCompatActivity() {
 
             // combine date + time into one timestamp
             val cal = Calendar.getInstance().apply {
-                set(Calendar.YEAR,         datePicker.year)
-                set(Calendar.MONTH,        datePicker.month)
-                set(Calendar.DAY_OF_MONTH, datePicker.dayOfMonth)
-                set(Calendar.HOUR_OF_DAY,  selectedHour)
-                set(Calendar.MINUTE,       selectedMinute)
-                set(Calendar.SECOND,       0)
-                set(Calendar.MILLISECOND,  0)
+                set(Calendar.YEAR,        datePicker.year)
+                set(Calendar.MONTH,       datePicker.month)
+                set(Calendar.DAY_OF_MONTH,datePicker.dayOfMonth)
+                set(Calendar.HOUR_OF_DAY, selectedHour)
+                set(Calendar.MINUTE,      selectedMinute)
+                set(Calendar.SECOND,      0)
+                set(Calendar.MILLISECOND, 0)
             }
             val timestamp = cal.timeInMillis
 
@@ -173,5 +179,25 @@ class AddEventActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    /**
+     * Show the RatingBar only if the picked date+time is before now.
+     */
+    private fun updateRatingVisibility() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.YEAR,        datePicker.year)
+            set(Calendar.MONTH,       datePicker.month)
+            set(Calendar.DAY_OF_MONTH,datePicker.dayOfMonth)
+            set(Calendar.HOUR_OF_DAY, selectedHour)
+            set(Calendar.MINUTE,      selectedMinute)
+            set(Calendar.SECOND,      0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        ratingBar.visibility =
+            if (cal.timeInMillis < System.currentTimeMillis())
+                View.VISIBLE
+            else
+                View.GONE
     }
 }
