@@ -96,9 +96,9 @@ class MainActivity : AppCompatActivity() {
         calendarView = findViewById(R.id.calendarView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         eventAdapter = EventAdapter(listOf()) { event ->
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("event", event)
-            startActivity(intent)
+                 val intent = Intent(this, DetailActivity::class.java)
+                     .putExtra("eventId", event.id)
+                 startActivity(intent)
         }
         recyclerView.adapter = eventAdapter
 

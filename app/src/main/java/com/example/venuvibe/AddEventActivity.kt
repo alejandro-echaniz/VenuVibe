@@ -1,6 +1,7 @@
 package com.example.venuvibe
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
@@ -92,11 +93,8 @@ class AddEventActivity : AppCompatActivity() {
                 selectedAddress = place.address ?: place.name.orEmpty()
             }
             override fun onError(status: Status) {
-                Toast.makeText(
-                    this@AddEventActivity,
-                    "Error selecting place: $status",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Log.e("AddEventActivity",
+                    "Places Autocomplete error: code=${status.statusCode}, msg=${status.statusMessage}")
             }
         })
 
