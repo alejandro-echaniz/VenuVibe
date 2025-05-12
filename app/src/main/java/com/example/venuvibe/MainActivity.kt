@@ -1,5 +1,11 @@
 package com.example.venuvibe
 
+/* GROUP WORK PERCENTAGE BREAKDOWN
+* Alejandro Echaniz   (118 010 335) -> 33.3%
+* Sasanka Ponnaganti  (118 863 986) -> 33.3%
+* Dongxiao Zhu        (118 679 754) -> 33.3%
+* */
+
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color

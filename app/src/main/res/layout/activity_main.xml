@@ -4,7 +4,7 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id ="@+id/mainLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     >
 
     <!-- Toolbar -->
@@ -33,48 +33,25 @@
     </com.google.android.material.appbar.MaterialToolbar>
     <!--Content-->
     <LinearLayout
-        android:layout_marginTop="100dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_gravity="center">
-
-    <CalendarView
-        android:id="@+id/calendarView"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <!-- To Display the remotely stored event -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvEvents"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp" />
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.8"/>
 
-
-    <!-- Adding Event Button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="Add Event"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-   <!-- FAB to view rated events -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabRatedEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="88dp"
-            android:contentDescription="View Rated Events"
-            app:srcCompat="@android:drawable/star_on" />
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEvents"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.2"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="120dp"/>
 
         <!-- AdView pinned to bottom -->
         <com.google.android.gms.ads.AdView
@@ -83,8 +60,27 @@
             android:layout_height="wrap_content"
             ads:adSize="BANNER"
             ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
-
     </LinearLayout>
 
+    <!-- Adding Event Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="100dp"
+        android:contentDescription="Add Event"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
+    <!-- FAB to view rated events -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabRatedEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="180dp"
+        android:contentDescription="View Rated Events"
+        app:srcCompat="@android:drawable/star_on" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
